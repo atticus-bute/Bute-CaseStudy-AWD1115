@@ -1,0 +1,19 @@
+﻿@model Product
+@{
+    ViewBag.Title = $"{ViewBag.Action} Product";
+}
+<h1 class="display-3">@ViewBag.Title</h1>
+<form method="post" asp-action="Edit">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <label asp-for="ProductCode" class="form-label"></label>
+    <input asp-for="ProductCode" class="form-control" />
+    <label asp-for="Name" class="form-label"></label>
+    <input asp-for="Name" class="form-control" min="1" />
+    <label asp-for="AnnualPrice" class="form-label"></label>
+    <input asp-for="AnnualPrice" class="form-control" type="number" />
+    <label asp-for="ReleaseDate" class="form-label"></label>
+    <input asp-for="ReleaseDate" class="form-control" type="Date" />
+    <input type="hidden" asp-for="@Model.ProductId" />
+    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-success" type="submit">Save</button>
+</form>
