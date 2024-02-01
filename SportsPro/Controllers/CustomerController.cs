@@ -2,10 +2,10 @@
 using SportsPro.Models;
 namespace SportsPro.Controllers
 {
-    public class ProductController : Controller
+    public class CustomerController : Controller
     {
         private SportsProContext Context { get; set; }
-        public ProductController(SportsProContext ctx)
+        public CustomerController(SportsProContext ctx)
         {
             Context = ctx;
         }
@@ -13,56 +13,54 @@ namespace SportsPro.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var products = Context.Products.ToList();
-            ViewBag.Title = "Products";
-            return View(products);
+            return View();
         }
         [HttpGet]
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
-            return View("Edit", new Product());
+            return View("Edit", new Customer());
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             ViewBag.Action = "Edit";
-            var product = Context.Products.Find(id);
-            return View(product);
+            var customer = Context.Customers.Find(id);
+            return View(customer);
         }
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var product = Context.Products.Find(id);
-            return View(product);
+            var customer = Context.Customers.Find(id);
+            return View(customer);
         }
         //HTTP POST METHODS
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(Customer customer)
         {
             if (ModelState.IsValid)
             {
-                if (product.ProductId == 0)
+                if (customer.CustomerId == 0)
                 {
-                    Context.Products.Add(product);
+                    Context.Customers.Add(customer);
                 }
                 else
                 {
-                    Context.Products.Update(product);
+                    Context.Customers.Update(customer);
                 }
                 Context.SaveChanges();
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Action = (product.ProductId == 0) ? "Add" : "Edit";
-                return View(product);
+                ViewBag.Action = (customer.CustomerId == 0) ? "Add" : "Edit";
+                return View(customer);
             }
         }
         [HttpPost]
-        public IActionResult Delete(Product product)
+        public IActionResult Delete(Customer customer)
         {
-            Context.Products.Remove(product);
+            Context.Customers.Remove(customer);
             Context.SaveChanges();
             return RedirectToAction("Index");
         }

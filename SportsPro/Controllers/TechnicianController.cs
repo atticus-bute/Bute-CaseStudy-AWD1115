@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportsPro.Models;
+
 namespace SportsPro.Controllers
 {
-    public class ProductController : Controller
+    public class TechnicianController : Controller
     {
         private SportsProContext Context { get; set; }
-        public ProductController(SportsProContext ctx)
+        public TechnicianController(SportsProContext ctx)
         {
             Context = ctx;
         }
@@ -13,56 +14,56 @@ namespace SportsPro.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var products = Context.Products.ToList();
-            ViewBag.Title = "Products";
-            return View(products);
+            var technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();
+            ViewBag.Title = "Technicians";
+            return View(technicians);
         }
         [HttpGet]
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
-            return View("Edit", new Product());
+            return View("Edit", new Technician());
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             ViewBag.Action = "Edit";
-            var product = Context.Products.Find(id);
-            return View(product);
+            var technician = Context.Technicians.Find(id);
+            return View(technician);
         }
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var product = Context.Products.Find(id);
-            return View(product);
+            var technician = Context.Technicians.Find(id);
+            return View(technician);
         }
         //HTTP POST METHODS
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(Technician technician)
         {
             if (ModelState.IsValid)
             {
-                if (product.ProductId == 0)
+                if (technician.TechnicianId == 0)
                 {
-                    Context.Products.Add(product);
+                    Context.Technicians.Add(technician);
                 }
                 else
                 {
-                    Context.Products.Update(product);
+                    Context.Technicians.Update(technician);
                 }
                 Context.SaveChanges();
                 return RedirectToAction("Index");
             }
             else
             {
-                ViewBag.Action = (product.ProductId == 0) ? "Add" : "Edit";
-                return View(product);
+                ViewBag.Action = (technician.TechnicianId == 0) ? "Add" : "Edit";
+                return View(technician);
             }
         }
         [HttpPost]
-        public IActionResult Delete(Product product)
+        public IActionResult Delete(Technician technician)
         {
-            Context.Products.Remove(product);
+            Context.Technicians.Remove(technician);
             Context.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -1,0 +1,29 @@
+﻿@model Customer
+@{
+    ViewBag.Title = $"{ViewBag.Action} Customer";
+}
+<h1 class="display-3">@ViewBag.Title</h1>
+<form method="post" asp-action="Edit">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <label asp-for="FirstName" class="form-label"></label>
+    <input asp-for="FirstName" class="form-control" />
+    <label asp-for="LastName" class="form-label"></label>
+    <input asp-for="LastName" class="form-control" />
+    <label asp-for="Address" class="form-label"></label>
+    <input asp-for="Address" class="form-control" />
+    <label asp-for="City" class="form-label"></label>
+    <input asp-for="City" class="form-control" />
+    <label asp-for="State" class="form-label"></label>
+    <input asp-for="State" class="form-control" />
+    <label asp-for="PostalCode" class="form-label"></label>
+    <input asp-for="PostalCode" class="form-control" />
+    <label asp-for="Country" class="form-label"></label>
+    <input asp-for="Country" class="form-control" />
+    <label asp-for="Email" class="form-label"></label>
+    <input asp-for="Email" class="form-control" />
+    <label asp-for="Phone" class="form-label"></label>
+    <input asp-for="Phone" class="form-control" />
+    <input type="hidden" asp-for="@Model.CustomerId" />
+    <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-success" type="submit">Save</button>
+</form>
