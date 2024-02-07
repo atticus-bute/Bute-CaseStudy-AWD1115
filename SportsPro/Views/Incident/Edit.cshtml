@@ -1,5 +1,14 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Incident
 @{
+    ViewBag.Title = $"{ViewBag.Action} Incident";
 }
+<h1 class="display-3">@ViewBag.Title</h1>
+<form method="post" asp-action="Edit">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" class="form-control" />
+
+    <input type="hidden" asp-for="@Model.IncidentId" />
+    <a asp-controller="Incident" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-success" type="submit">Save</button>
+</form>

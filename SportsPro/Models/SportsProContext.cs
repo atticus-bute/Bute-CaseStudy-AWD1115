@@ -24,6 +24,9 @@ namespace SportsPro.Models
             modelBuilder.Entity<Customer>().HasData(
                 new Customer { CustomerId = 1, FirstName = "Candy", LastName = "Kong", Address = "1234 Main St", City = "Beverly Hills", State = "CA", PostalCode = "90210", Country = "USA", Phone = "123465888", Email = "jaogg@mail.com" }
             );
+            modelBuilder.Entity<Incident>().HasData(
+                new Incident { IncidentId = 1, Title = "Title", Description = "Description", DateOpened = new DateTime(2021, 1, 1), CustomerId = 1, ProductId = 1, TechnicianId = 1 }
+            );
         }
     }
 }
