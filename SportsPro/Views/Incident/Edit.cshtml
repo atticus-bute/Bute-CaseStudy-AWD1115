@@ -7,7 +7,31 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <label asp-for="Title" class="form-label"></label>
     <input asp-for="Title" class="form-control" />
-
+    <label asp-for="CustomerId" class="form-label"></label>
+    <select asp-for="CustomerId" class="form-select">
+        @foreach (var customer in ViewBag.Customers)
+        {
+            <option value="@customer.CustomerId">@customer.FullName()</option>
+        })
+    </select>
+    <label asp-for="ProductId" class="form-label"></label>
+    <select asp-for="ProductId" class="form-select">
+        @foreach (var product in ViewBag.Products)
+        {
+            <option value="@product.ProductId">@product.Name</option>
+        })
+    </select>
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control"></textarea>
+    <label asp-for="TechnicianId" class="form-label"></label>
+    <select asp-for="TechnicianId" class="form-select">
+        @foreach (var technician in ViewBag.Technicians)
+        {
+            <option value="@technician.TechnicianId">@technician.FullName()</option>
+        })
+    </select>
+    <input type="hidden" asp-for="@Model.DateOpened" />
+    <input type="hidden" asp-for="@Model.DateClosed" />
     <input type="hidden" asp-for="@Model.IncidentId" />
     <a asp-controller="Incident" asp-action="Index" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-success" type="submit">Save</button>

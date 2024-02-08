@@ -12,6 +12,7 @@ namespace SportsPro.Controllers
         }
         //HTTP GET METHODS
         [HttpGet]
+        [Route("technicians")]
         public IActionResult Index()
         {
             var technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();

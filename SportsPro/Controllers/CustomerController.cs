@@ -11,6 +11,7 @@ namespace SportsPro.Controllers
         }
         //HTTP GET METHODS
         [HttpGet]
+        [Route("customers")]
         public IActionResult Index()
         {
             var customers = Context.Customers.ToList();
@@ -21,12 +22,14 @@ namespace SportsPro.Controllers
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
+            ViewBag.Countries = Context.Countries.ToList();
             return View("Edit", new Customer());
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             ViewBag.Action = "Edit";
+            ViewBag.Countries = Context.Countries.ToList();
             var customer = Context.Customers.Find(id);
             return View(customer);
         }
@@ -50,12 +53,14 @@ namespace SportsPro.Controllers
                 {
                     Context.Customers.Update(customer);
                 }
+                ViewBag.Countries = Context.Countries.ToList();
                 Context.SaveChanges();
                 return RedirectToAction("Index");
             }
             else
             {
                 ViewBag.Action = (customer.CustomerId == 0) ? "Add" : "Edit";
+                ViewBag.Countries = Context.Countries.ToList();
                 return View(customer);
             }
         }

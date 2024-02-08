@@ -11,6 +11,7 @@ namespace SportsPro.Controllers
         }
         //HTTP GET METHODS
         [HttpGet]
+        [Route("products")]
         public IActionResult Index()
         {
             var products = Context.Products.ToList();

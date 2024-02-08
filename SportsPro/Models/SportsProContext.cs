@@ -7,6 +7,7 @@ namespace SportsPro.Models
         public DbSet<Technician> Technicians { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<Incident> Incidents { get; set; } = null!;
+        public DbSet<Country> Countries { get; set; } = null!;
         public SportsProContext(DbContextOptions<SportsProContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,10 +23,15 @@ namespace SportsPro.Models
                 new Technician { TechnicianId = 1, FirstName = "Hector", LastName = "Lector", Email = "asdf@asdf.com", Phone = "123465888" }
             );
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { CustomerId = 1, FirstName = "Candy", LastName = "Kong", Address = "1234 Main St", City = "Beverly Hills", State = "CA", PostalCode = "90210", Country = "USA", Phone = "123465888", Email = "jaogg@mail.com" }
+                new Customer { CustomerId = 1, FirstName = "Candy", LastName = "Kong", Address = "1234 Main St", City = "Beverly Hills", State = "CA", PostalCode = "90210", CountryId = "usa", Phone = "123465888", Email = "jaogg@mail.com" }
             );
             modelBuilder.Entity<Incident>().HasData(
                 new Incident { IncidentId = 1, Title = "Title", Description = "Description", DateOpened = new DateTime(2021, 1, 1), CustomerId = 1, ProductId = 1, TechnicianId = 1 }
+            );
+            modelBuilder.Entity<Country>().HasData(
+                 new Country { CountryId = "usa", Name = "United States" },
+                 new Country { CountryId = "can", Name = "Canada" },
+                 new Country { CountryId = "mex", Name = "Mexico" }
             );
         }
     }

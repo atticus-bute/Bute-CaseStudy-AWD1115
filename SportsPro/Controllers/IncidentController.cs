@@ -12,6 +12,7 @@ namespace SportsPro.Controllers
         }
         //HTTP GET METHODS
         [HttpGet]
+        [Route("incidents")]
         public IActionResult Index()
         {
             var incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
@@ -22,12 +23,18 @@ namespace SportsPro.Controllers
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
+            ViewBag.Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();
+            ViewBag.Customers = Context.Customers.OrderBy(c => c.LastName).ToList();
+            ViewBag.Products = Context.Products.OrderBy(p => p.Name).ToList();
             return View("Edit", new Incident());
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             ViewBag.Action = "Edit";
+            ViewBag.Technicians = Context.Technicians.OrderBy(t=>t.LastName).ToList();
+            ViewBag.Customers = Context.Customers.OrderBy(c=>c.LastName).ToList();
+            ViewBag.Products = Context.Products.OrderBy(p=>p.Name).ToList();
             var incident = Context.Incidents.Find(id);
             return View(incident);
         }
@@ -45,6 +52,7 @@ namespace SportsPro.Controllers
             {
                 if (incident.IncidentId == 0)
                 {
+                    incident.DateOpened = DateTime.Now;
                     Context.Incidents.Add(incident);
                 }
                 else
@@ -57,6 +65,9 @@ namespace SportsPro.Controllers
             else
             {
                 ViewBag.Action = (incident.IncidentId == 0) ? "Add" : "Edit";
+                ViewBag.Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();
+                ViewBag.Customers = Context.Customers.OrderBy(c => c.LastName).ToList();
+                ViewBag.Products = Context.Products.OrderBy(p => p.Name).ToList();
                 return View(incident);
             }
         }

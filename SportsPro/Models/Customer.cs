@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 namespace SportsPro.Models
 {
     public class Customer
@@ -16,11 +17,12 @@ namespace SportsPro.Models
         public string? State { get; set; } = string.Empty;
         [Required(ErrorMessage = "Please enter a postal code")]
         public string? PostalCode { get; set; } = string.Empty;
-        [Required(ErrorMessage = "Please enter a country")]
-        public string? Country { get; set; } = string.Empty;
+        public string? CountryId { get; set;} = string.Empty;
+        [ValidateNever]
+        public Country Country { get; set; } = null!;
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
         public string? Email { get; set; } = string.Empty;
         public string? Phone { get; set; } = string.Empty;
-        public string FullName() { return FirstName + " " + LastName;}    
+        public string FullName() { return FirstName + " " + LastName;}
     }
 }
