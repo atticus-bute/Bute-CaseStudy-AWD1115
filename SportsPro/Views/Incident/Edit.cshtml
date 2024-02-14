@@ -1,34 +1,24 @@
 ﻿@model Incident
 @{
-    ViewBag.Title = $"{ViewBag.Action} Incident";
+    ViewBag.Title = $"{ViewBag.Action} SportsPro Incident";
 }
-<h1 class="display-3">@ViewBag.Title</h1>
 <form method="post" asp-action="Edit">
     <div asp-validation-summary="All" class="text-danger"></div>
     <label asp-for="Title" class="form-label"></label>
     <input asp-for="Title" class="form-control" />
     <label asp-for="CustomerId" class="form-label"></label>
-    <select asp-for="CustomerId" class="form-select">
-        @foreach (var customer in ViewBag.Customers)
-        {
-            <option value="@customer.CustomerId">@customer.FullName()</option>
-        })
+    <select asp-for="CustomerId" asp-items="@(new SelectList(ViewBag.Customers, "CustomerId", "FullName"))" class="form-select">
+        <option value="">Select a customer...</option>
     </select>
     <label asp-for="ProductId" class="form-label"></label>
-    <select asp-for="ProductId" class="form-select">
-        @foreach (var product in ViewBag.Products)
-        {
-            <option value="@product.ProductId">@product.Name</option>
-        })
+    <select asp-for="ProductId" asp-items="@(new SelectList(ViewBag.Products, "ProductId", "ProductCode"))" class="form-select">
+        <option value="">Select a product...</option>
     </select>
     <label asp-for="Description" class="form-label"></label>
     <textarea asp-for="Description" class="form-control"></textarea>
     <label asp-for="TechnicianId" class="form-label"></label>
-    <select asp-for="TechnicianId" class="form-select">
-        @foreach (var technician in ViewBag.Technicians)
-        {
-            <option value="@technician.TechnicianId">@technician.FullName()</option>
-        })
+    <select asp-for="TechnicianId" asp-items="@(new SelectList(ViewBag.Technicians, "TechnicianId", "FullName"))" class="form-select">
+            <option value="">Select a technician...</option>
     </select>
     <input type="hidden" asp-for="@Model.DateOpened" />
     <input type="hidden" asp-for="@Model.DateClosed" />

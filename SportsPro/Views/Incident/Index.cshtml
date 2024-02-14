@@ -1,8 +1,7 @@
 ﻿@model List<Incident>
 @{
-    ViewBag.Title = "Incident Management";
+    ViewBag.Title = "SportsPro Incident List";
 }
-<h1 class="display-3">SportsPro Incident Management</h1>
 <div class="d-grid gap-2 my-3">
     <a asp-controller="Incident" asp-action="Add" class="btn btn-primary">Add Incident</a>
 </div>
@@ -22,7 +21,7 @@
         {
             <tr>
                 <td>@incident.Title</td>
-                <td>@incident.Customer.FullName()</td>
+                <td>@incident.Customer.FullName</td>
                 <td>@incident.Product.Name</td>
                 <td>@incident.DateOpened</td>
                 <td><a asp-controller="Incident" asp-action="Edit" asp-route-id="@incident.IncidentId" class="btn btn-warning">Edit</a></td>

@@ -12,6 +12,6 @@ namespace SportsPro.Models
         public string? Email { get; set; } = string.Empty;
         [Required(ErrorMessage = "Please enter a phone number")]
         public string? Phone { get; set; } = string.Empty;
-        public string FullName() { return $"{FirstName} {LastName}";} 
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

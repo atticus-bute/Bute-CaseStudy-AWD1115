@@ -1,11 +1,10 @@
 ﻿@model Incident
 @{
-    ViewBag.Title = "Delete Incident";
+    ViewBag.Title = "Delete SportsPro Incident";
 }
-<h1 class="display-3">@ViewBag.Title</h1>
 <p class="fs-3">Do you really want to delete incident <span class="fw-bold">@Model.Title</span>?</p>
 <form asp-action="Delete" method="post">
     <input type="hidden" asp-for="IncidentId" />
-    <a asp-controller="Incidnet" asp-action="Index" class="btn btn-dark">Cancel</a>
+    <a asp-controller="Incident" asp-action="Index" class="btn btn-dark">Cancel</a>
     <button type="submit" class="btn btn-danger">Delete</button>
 </form>

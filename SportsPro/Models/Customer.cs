@@ -23,6 +23,6 @@ namespace SportsPro.Models
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
         public string? Email { get; set; } = string.Empty;
         public string? Phone { get; set; } = string.Empty;
-        public string FullName() { return FirstName + " " + LastName;}
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

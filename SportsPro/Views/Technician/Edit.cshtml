@@ -1,8 +1,7 @@
 ﻿@model Technician
 @{
-    ViewBag.Title = $"{ViewBag.Action} Technician";
+    ViewBag.Title = $"{ViewBag.Action} SportsPro Technician";
 }
-<h1 class="display-3">@ViewBag.Title</h1>
 <form method="post" asp-action="Edit">
     <div asp-validation-summary="All" class="text-danger"></div>
     <label asp-for="FirstName" class="form-label"></label>
