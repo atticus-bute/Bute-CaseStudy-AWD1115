@@ -12,27 +12,27 @@ namespace SportsPro.Controllers
         //HTTP GET METHODS
         [HttpGet]
         [Route("products")]
-        public IActionResult Index()
+        public ViewResult Index()
         {
             var products = Context.Products.ToList();
             ViewBag.Title = "Products";
             return View(products);
         }
         [HttpGet]
-        public IActionResult Add()
+        public ViewResult Add()
         {
             ViewBag.Action = "Add";
             return View("Edit", new Product());
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public ViewResult Edit(int id)
         {
             ViewBag.Action = "Edit";
             var product = Context.Products.Find(id);
             return View(product);
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public ViewResult Delete(int id)
         {
             var product = Context.Products.Find(id);
             return View(product);
@@ -61,7 +61,7 @@ namespace SportsPro.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Delete(Product product)
+        public RedirectToActionResult Delete(Product product)
         {
             Context.Products.Remove(product);
             Context.SaveChanges();
