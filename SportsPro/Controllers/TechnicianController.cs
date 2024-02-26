@@ -53,6 +53,7 @@ namespace SportsPro.Controllers
                     Context.Technicians.Update(technician);
                 }
                 Context.SaveChanges();
+                TempData["technicianmessage"] = $"Technician {technician.FullName} has been saved";
                 return RedirectToAction("Index");
             }
             else
@@ -66,6 +67,7 @@ namespace SportsPro.Controllers
         {
             Context.Technicians.Remove(technician);
             Context.SaveChanges();
+            TempData["technicianmessage"] = $"Technician {technician.FullName} has been deleted";
             return RedirectToAction("Index");
         }
     }

@@ -1,28 +1,28 @@
-﻿@model Incident
+﻿@model IncidentViewModel
 @{
     ViewBag.Title = $"{ViewBag.Action} SportsPro Incident";
 }
 <form method="post" asp-action="Edit">
     <div asp-validation-summary="All" class="text-danger"></div>
-    <label asp-for="Title" class="form-label"></label>
-    <input asp-for="Title" class="form-control" />
-    <label asp-for="CustomerId" class="form-label"></label>
-    <select asp-for="CustomerId" asp-items="@(new SelectList(ViewBag.Customers, "CustomerId", "FullName"))" class="form-select">
+    <label asp-for="@Model.Incident.Title" class="form-label"></label>
+    <input asp-for="@Model.Incident.Title" class="form-control" />
+    <label asp-for="@Model.Incident.CustomerId" class="form-label"></label>
+    <select asp-for="@Model.Incident.CustomerId" asp-items="@(new SelectList(Model.Customers, "CustomerId", "FullName"))" class="form-select">
         <option value="">Select a customer...</option>
     </select>
-    <label asp-for="ProductId" class="form-label"></label>
-    <select asp-for="ProductId" asp-items="@(new SelectList(ViewBag.Products, "ProductId", "ProductCode"))" class="form-select">
+    <label asp-for="@Model.Incident.ProductId" class="form-label"></label>
+    <select asp-for="@Model.Incident.ProductId" asp-items="@(new SelectList(Model.Products, "ProductId", "ProductCode"))" class="form-select">
         <option value="">Select a product...</option>
     </select>
-    <label asp-for="Description" class="form-label"></label>
-    <textarea asp-for="Description" class="form-control"></textarea>
-    <label asp-for="TechnicianId" class="form-label"></label>
-    <select asp-for="TechnicianId" asp-items="@(new SelectList(ViewBag.Technicians, "TechnicianId", "FullName"))" class="form-select">
+    <label asp-for="@Model.Incident.Description" class="form-label"></label>
+    <textarea asp-for="@Model.Incident.Description" class="form-control"></textarea>
+    <label asp-for="@Model.Incident.TechnicianId" class="form-label"></label>
+    <select asp-for="@Model.Incident.TechnicianId" asp-items="@(new SelectList(Model.Technicians, "TechnicianId", "FullName"))" class="form-select">
             <option value="">Select a technician...</option>
     </select>
-    <input type="hidden" asp-for="@Model.DateOpened" />
-    <input type="hidden" asp-for="@Model.DateClosed" />
-    <input type="hidden" asp-for="@Model.IncidentId" />
+    <input type="hidden" asp-for="@Model.Incident.DateOpened" />
+    <input type="hidden" asp-for="@Model.Incident.DateClosed" />
+    <input type="hidden" asp-for="@Model.Incident.IncidentId" />
     <a asp-controller="Incident" asp-action="Index" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-success" type="submit">Save</button>
 </form>

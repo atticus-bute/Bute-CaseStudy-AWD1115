@@ -2,6 +2,10 @@
 @{
     ViewBag.Title = "SportsPro Product List";
 }
+@if (TempData.Keys.Contains("productmessage"))
+{
+    <div class="alert alert-success">@TempData["productmessage"]</div>
+}
     <div class="d-grid gap-2 my-3">
         <a asp-controller="Product" asp-action="Add" class="btn btn-primary">Add Product</a>
     </div>

@@ -1,6 +1,10 @@
-﻿@model List<Incident>
+﻿@model IncidentViewModel
 @{
     ViewBag.Title = "SportsPro Incident List";
+}
+@if (TempData.Keys.Contains("incidentmessage"))
+{
+    <div class="alert alert-success">@TempData["incidentmessage"]</div>
 }
 <div class="d-grid gap-2 my-3">
     <a asp-controller="Incident" asp-action="Add" class="btn btn-primary">Add Incident</a>
@@ -17,7 +21,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var incident in Model)
+        @foreach (var incident in Model.Incidents)
         {
             <tr>
                 <td>@incident.Title</td>

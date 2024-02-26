@@ -55,6 +55,7 @@ namespace SportsPro.Controllers
                 }
                 ViewBag.Countries = Context.Countries.ToList();
                 Context.SaveChanges();
+                TempData["customermessage"] = $"Customer {customer.FullName} has been saved";
                 return RedirectToAction("Index");
             }
             else
@@ -69,6 +70,7 @@ namespace SportsPro.Controllers
         {
             Context.Customers.Remove(customer);
             Context.SaveChanges();
+            TempData["customermessage"] = $"Customer {customer.FullName} has been deleted";
             return RedirectToAction("Index");
         }
     }

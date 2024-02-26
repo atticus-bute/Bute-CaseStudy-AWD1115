@@ -15,28 +15,39 @@ namespace SportsPro.Controllers
         [Route("incidents")]
         public IActionResult Index()
         {
-            var incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
+            IncidentViewModel vm = new IncidentViewModel
+            {
+                Incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList(),
+                Filter = "All"
+            };
             ViewBag.Title = "Incidents";
-            return View(incidents);
+            return View(vm);
         }
         [HttpGet]
         public IActionResult Add()
         {
+            IncidentViewModel vm = new IncidentViewModel
+            {
+                Incident = new Incident(),
+                Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList(),
+                Customers = Context.Customers.OrderBy(c => c.LastName).ToList(),
+                Products = Context.Products.OrderBy(p => p.Name).ToList()
+            };
             ViewBag.Action = "Add";
-            ViewBag.Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();
-            ViewBag.Customers = Context.Customers.OrderBy(c => c.LastName).ToList();
-            ViewBag.Products = Context.Products.OrderBy(p => p.Name).ToList();
-            return View("Edit", new Incident());
+            return View("Edit", vm);
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            IncidentViewModel vm = new IncidentViewModel
+            {
+                Incident = Context.Incidents.Find(id),
+                Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList(),
+                Customers = Context.Customers.OrderBy(c => c.LastName).ToList(),
+                Products = Context.Products.OrderBy(p => p.Name).ToList()
+            };
             ViewBag.Action = "Edit";
-            ViewBag.Technicians = Context.Technicians.OrderBy(t=>t.LastName).ToList();
-            ViewBag.Customers = Context.Customers.OrderBy(c=>c.LastName).ToList();
-            ViewBag.Products = Context.Products.OrderBy(p=>p.Name).ToList();
-            var incident = Context.Incidents.Find(id);
-            return View(incident);
+            return View(vm);
         }
         [HttpGet]
         public IActionResult Delete(int id)
@@ -48,27 +59,31 @@ namespace SportsPro.Controllers
         [HttpPost]
         public IActionResult Edit(Incident incident)
         {
+            IncidentViewModel vm = new IncidentViewModel
+            {
+                Incident = incident,
+                Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList(),
+                Customers = Context.Customers.OrderBy(c => c.LastName).ToList(),
+                Products = Context.Products.OrderBy(p => p.Name).ToList()
+            };
             if (ModelState.IsValid)
             {
-                if (incident.IncidentId == 0)
+                if (vm.Incident.IncidentId == 0)
                 {
-                    incident.DateOpened = DateTime.Now;
-                    Context.Incidents.Add(incident);
+                    vm.Incident.DateOpened = DateTime.Now;
+                    Context.Incidents.Add(vm.Incident);
                 }
                 else
                 {
-                    Context.Incidents.Update(incident);
+                    Context.Incidents.Update(vm.Incident);
                 }
                 Context.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["incidentmessage"] = $"Incident {vm.Incident.Title} has been saved";
+                return RedirectToAction("Index", vm);
             }
             else
             {
-                ViewBag.Action = (incident.IncidentId == 0) ? "Add" : "Edit";
-                ViewBag.Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();
-                ViewBag.Customers = Context.Customers.OrderBy(c => c.LastName).ToList();
-                ViewBag.Products = Context.Products.OrderBy(p => p.Name).ToList();
-                return View(incident);
+                return View(vm);
             }
         }
         [HttpPost]
@@ -76,6 +91,7 @@ namespace SportsPro.Controllers
         {
             Context.Incidents.Remove(incident);
             Context.SaveChanges();
+            TempData["incidentmessage"] = $"Incident {incident.Title} has been deleted";
             return RedirectToAction("Index");
         }
     }
