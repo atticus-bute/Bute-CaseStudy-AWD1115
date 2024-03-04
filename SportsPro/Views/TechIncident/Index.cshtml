@@ -2,6 +2,10 @@
 @{
     ViewBag.Title = "Select Technician";
 }
+@if (TempData.Keys.Contains("techincidentmessage"))
+{
+    <div class="alert alert-success">@TempData["techincidentmessage"]</div>
+}
 <form asp-action="List" method="post">
     <select asp-for="TechnicianId" class="form-select" asp-items="@(new SelectList(ViewBag.Technicians, "TechnicianId", "FullName"))">
         <option value="0">Select a technician...</option>
