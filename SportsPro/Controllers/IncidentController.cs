@@ -12,15 +12,29 @@ namespace SportsPro.Controllers
         }
         //HTTP GET METHODS
         [HttpGet]
-        [Route("incidents")]
-        public IActionResult Index()
+        [Route("incidents/{filter?}")]
+        public IActionResult Index(string filter = "all")
         {
             IncidentViewModel vm = new IncidentViewModel
             {
-                Incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList(),
-                Filter = "All"
+                Incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList()
             };
             ViewBag.Title = "Incidents";
+            if (filter == "unassigned")
+            {
+                vm.Filter = "unassigned";
+                vm.Incidents = Context.Incidents.Where(i => i.TechnicianId == -1).Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
+            }
+            else if (filter == "open")
+            {
+                vm.Filter = "open";
+                vm.Incidents = Context.Incidents.Where(i => i.DateClosed == null).Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
+            }
+            else
+            {
+                vm.Filter = "all";
+                vm.Incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
+            }
             return View(vm);
         }
         [HttpGet]
