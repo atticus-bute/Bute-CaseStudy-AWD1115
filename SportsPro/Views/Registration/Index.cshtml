@@ -1,0 +1,14 @@
+﻿@model Customer
+@{
+    ViewBag.Title = $"Select Customer";
+}
+@if (TempData.Keys.Contains("registrationmessage"))
+{
+    <div class="alert alert-success">@TempData["registrationmessage"]</div>
+}
+<form asp-action="Register" asp-route-id="CustomerId" method="post">
+    <select asp-for="CustomerId" class="form-select" asp-items="@(new SelectList(ViewBag.Customers, "CustomerId", "FullName"))">
+        <option value="0">Select a customer...</option>
+    </select>
+    <button type="submit" class="btn btn-primary mt-2">Select</button>
+</form>

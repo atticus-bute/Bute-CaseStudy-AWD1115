@@ -28,7 +28,7 @@
                         <li class="nav-item"><a asp-area="" asp-controller="Technician" asp-action="Index" class="nav-link @(c == "Technician" && a == "Index" ? "active" : "")">Technicians</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Customer" asp-action="Index" class="nav-link @(c == "Customer" && a == "Index" ? "active" : "")">Customers</a></li>
                         <li class="nav-item"><a asp-area="" asp-controller="Incident" asp-action="Index" asp-route-filter="all" class="nav-link @(c == "Incident" && a == "Index" ? "active" : "")">Incidents</a></li>
-                        <li class="nav-item"><a class="nav-link">Registrations</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Registration" asp-action="Index" class="nav-link">Registrations</a></li>
                         <li class="nav-item ms-auto"><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
                     </ul>
                 </div>

@@ -1,0 +1,23 @@
+﻿@model RegistrationViewModel
+@{
+    ViewBag.Title = $"Manage {Model.Customer.FullName}'s Products";
+}
+<h1 class="display-5">Registrations</h1>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @* @foreach (var product in Model.Customer.RegisteredProducts)
+        {
+            <tr>
+                <td>@product.Title</td>
+                <td><a asp-controller="Register" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a></td>
+            </tr>
+        } *@
+    </tbody>
+</table>
+<a asp-action="Index" class="btn btn-primary">Switch Customer</a>

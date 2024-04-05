@@ -15,7 +15,6 @@ namespace SportsPro.Controllers
         public IActionResult Index()
         {
             var customers = Context.Customers.ToList();
-            ViewBag.Title = "Customers";
             return View(customers);
         }
         [HttpGet]
