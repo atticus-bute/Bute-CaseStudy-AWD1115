@@ -12,8 +12,8 @@ using SportsPro.Models;
 namespace SportsPro.Migrations
 {
     [DbContext(typeof(SportsProContext))]
-    [Migration("20240202155820_customer2")]
-    partial class customer2
+    [Migration("20240408150911_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,69 @@ namespace SportsPro.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CustomerProduct", b =>
+                {
+                    b.Property<int>("RegisteredCustomersCustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegisteredProductsProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RegisteredCustomersCustomerId", "RegisteredProductsProductId");
+
+                    b.HasIndex("RegisteredProductsProductId");
+
+                    b.ToTable("CustomerProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            RegisteredCustomersCustomerId = 1,
+                            RegisteredProductsProductId = 1
+                        },
+                        new
+                        {
+                            RegisteredCustomersCustomerId = 1,
+                            RegisteredProductsProductId = 2
+                        },
+                        new
+                        {
+                            RegisteredCustomersCustomerId = 1,
+                            RegisteredProductsProductId = 3
+                        });
+                });
+
+            modelBuilder.Entity("SportsPro.Models.Country", b =>
+                {
+                    b.Property<string>("CountryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CountryId");
+
+                    b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            CountryId = "usa",
+                            Name = "United States"
+                        },
+                        new
+                        {
+                            CountryId = "can",
+                            Name = "Canada"
+                        },
+                        new
+                        {
+                            CountryId = "mex",
+                            Name = "Mexico"
+                        });
+                });
+
             modelBuilder.Entity("SportsPro.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -35,39 +98,48 @@ namespace SportsPro.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CountryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("CustomerId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Customers");
 
@@ -77,7 +149,7 @@ namespace SportsPro.Migrations
                             CustomerId = 1,
                             Address = "1234 Main St",
                             City = "Beverly Hills",
-                            Country = "USA",
+                            CountryId = "usa",
                             Email = "jaogg@mail.com",
                             FirstName = "Candy",
                             LastName = "Kong",
@@ -95,6 +167,9 @@ namespace SportsPro.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IncidentId"));
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateClosed")
                         .HasColumnType("datetime2");
 
@@ -104,12 +179,36 @@ namespace SportsPro.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TechnicianId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IncidentId");
 
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("TechnicianId");
+
                     b.ToTable("Incidents");
+
+                    b.HasData(
+                        new
+                        {
+                            IncidentId = 1,
+                            CustomerId = 1,
+                            DateOpened = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Description",
+                            ProductId = 1,
+                            TechnicianId = 1,
+                            Title = "Title"
+                        });
                 });
 
             modelBuilder.Entity("SportsPro.Models.Product", b =>
@@ -226,6 +325,57 @@ namespace SportsPro.Migrations
                             LastName = "Lector",
                             Phone = "123465888"
                         });
+                });
+
+            modelBuilder.Entity("CustomerProduct", b =>
+                {
+                    b.HasOne("SportsPro.Models.Customer", null)
+                        .WithMany()
+                        .HasForeignKey("RegisteredCustomersCustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportsPro.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("RegisteredProductsProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SportsPro.Models.Customer", b =>
+                {
+                    b.HasOne("SportsPro.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("SportsPro.Models.Incident", b =>
+                {
+                    b.HasOne("SportsPro.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportsPro.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportsPro.Models.Technician", "Technician")
+                        .WithMany()
+                        .HasForeignKey("TechnicianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Technician");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 namespace SportsPro.Models
 {
     public class Product
@@ -13,5 +14,7 @@ namespace SportsPro.Models
         [DataType(DataType.Currency)]
         public decimal AnnualPrice { get; set; }
         public DateTime? ReleaseDate { get; set; } = null;
+        [ValidateNever]
+        public List<Customer> RegisteredCustomers { get; set; }
     }
 }

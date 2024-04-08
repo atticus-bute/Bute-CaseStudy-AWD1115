@@ -33,6 +33,11 @@ namespace SportsPro.Models
                  new Country { CountryId = "can", Name = "Canada" },
                  new Country { CountryId = "mex", Name = "Mexico" }
             );
+            modelBuilder.Entity<Customer>().HasMany(c => c.RegisteredProducts).WithMany(p => p.RegisteredCustomers).UsingEntity(cp => cp.HasData(
+                new { RegisteredProductsProductId = 1, RegisteredCustomersCustomerId = 1 },
+                new { RegisteredProductsProductId = 2, RegisteredCustomersCustomerId = 1 },
+                new { RegisteredProductsProductId = 3, RegisteredCustomersCustomerId = 1 }
+            ));
         }
     }
 }

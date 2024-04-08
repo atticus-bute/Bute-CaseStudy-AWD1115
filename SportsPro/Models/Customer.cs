@@ -44,6 +44,8 @@ namespace SportsPro.Models
         [Display(Name = "Phone Number")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string? Phone { get; set; } = string.Empty;
+        [ValidateNever]
+        public List<Product> RegisteredProducts { get; set; } =  new List<Product>();
         public string FullName => $"{FirstName} {LastName}";
     }
 }

@@ -11,13 +11,30 @@
         </tr>
     </thead>
     <tbody>
-        @* @foreach (var product in Model.Customer.RegisteredProducts)
+        @if (Model.Customer.RegisteredProducts.Count == 0)
         {
             <tr>
-                <td>@product.Title</td>
-                <td><a asp-controller="Register" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a></td>
+                <td colspan="2">No products registered</td>
             </tr>
-        } *@
+        }
+        else
+        {
+            @foreach (var product in Model.Customer.RegisteredProducts)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td><a asp-controller="Register" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a></td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
-<a asp-action="Index" class="btn btn-primary">Switch Customer</a>
+<h1 class="display-5">Product</h1>
+<form asp-action="Add" method="post" class="row">
+    <select class="form-select" asp-for="Products" asp-items="@(new SelectList(Model.Products, "ProductId", "Name"))">
+    </select>
+    <button type="submit" class="btn btn-primary col-3 mt-1">Register Product</button>
+</form>
+<div>
+    <a asp-action="Index" class="btn btn-primary">Switch Customer</a>
+</div>
