@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SportsPro.Models;
+using SportsPro.Models.DataLayer;
 
 namespace SportsPro.Utility
 {

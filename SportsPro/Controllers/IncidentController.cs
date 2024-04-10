@@ -1,40 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportsPro.Models;
 using Microsoft.EntityFrameworkCore;
+using SportsPro.Models.DomainModels;
+using SportsPro.Models.DataLayer;
+using SportsPro.Models.ViewModels;
 namespace SportsPro.Controllers
 {
     public class IncidentController : Controller
     {
-        private SportsProContext Context { get; set; }
+        private Repository<Incident> incidents { get; set; }
+        private Repository<Technician> technicians { get; set; }
+        private Repository<Customer> customers { get; set; }
+        private Repository<Product> products { get; set; }
         public IncidentController(SportsProContext ctx)
         {
-            Context = ctx;
+            incidents = new Repository<Incident>(ctx);
+            technicians = new Repository<Technician>(ctx);
+            customers = new Repository<Customer>(ctx);
+            products = new Repository<Product>(ctx);
         }
         //HTTP GET METHODS
         [HttpGet]
         [Route("incidents/{filter?}")]
         public IActionResult Index(string filter = "all")
         {
-            IncidentViewModel vm = new IncidentViewModel
+            var options = new QueryOptions<Incident>
             {
-                Incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList()
+                Includes = "Technician, Customer, Product",
+                OrderBy = i => i.DateOpened
             };
             ViewBag.Title = "Incidents";
             if (filter == "unassigned")
             {
-                vm.Filter = "unassigned";
-                vm.Incidents = Context.Incidents.Where(i => i.TechnicianId == -1).Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
+                options.Where = i => i.TechnicianId == -1;
             }
             else if (filter == "open")
             {
-                vm.Filter = "open";
-                vm.Incidents = Context.Incidents.Where(i => i.DateClosed == null).Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
+                options.Where = i => i.DateClosed == null;
             }
-            else
+            IncidentViewModel vm = new IncidentViewModel
             {
-                vm.Filter = "all";
-                vm.Incidents = Context.Incidents.Include(i => i.Technician).Include(i => i.Customer).Include(i => i.Product).ToList();
-            }
+                Incidents = incidents.List(options),
+                Technicians = technicians.List(new QueryOptions<Technician>()),
+                Customers = customers.List(new QueryOptions<Customer>()),
+                Products = products.List(new QueryOptions<Product>()),
+                Filter = filter
+            };
             return View(vm);
         }
         [HttpGet]
@@ -43,9 +53,9 @@ namespace SportsPro.Controllers
             IncidentViewModel vm = new IncidentViewModel
             {
                 Incident = new Incident(),
-                Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList(),
-                Customers = Context.Customers.OrderBy(c => c.LastName).ToList(),
-                Products = Context.Products.OrderBy(p => p.Name).ToList()
+                Technicians = technicians.List(new QueryOptions<Technician>()),
+                Customers = customers.List(new QueryOptions<Customer>()),
+                Products = products.List(new QueryOptions<Product>())
             };
             ViewBag.Action = "Add";
             return View("Edit", vm);
@@ -55,10 +65,10 @@ namespace SportsPro.Controllers
         {
             IncidentViewModel vm = new IncidentViewModel
             {
-                Incident = Context.Incidents.Find(id),
-                Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList(),
-                Customers = Context.Customers.OrderBy(c => c.LastName).ToList(),
-                Products = Context.Products.OrderBy(p => p.Name).ToList()
+                Incident = incidents.Get(id),
+                Technicians = technicians.List(new QueryOptions<Technician>()),
+                Customers = customers.List(new QueryOptions<Customer>()),
+                Products = products.List(new QueryOptions<Product>())
             };
             ViewBag.Action = "Edit";
             return View(vm);
@@ -66,7 +76,7 @@ namespace SportsPro.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var incident = Context.Incidents.Find(id);
+            var incident = incidents.Get(id);
             return View(incident);
         }
         //HTTP POST METHODS
@@ -76,22 +86,22 @@ namespace SportsPro.Controllers
             IncidentViewModel vm = new IncidentViewModel
             {
                 Incident = incident,
-                Technicians = Context.Technicians.OrderBy(t => t.LastName).ToList(),
-                Customers = Context.Customers.OrderBy(c => c.LastName).ToList(),
-                Products = Context.Products.OrderBy(p => p.Name).ToList()
+                Technicians = technicians.List(new QueryOptions<Technician>()),
+                Customers = customers.List(new QueryOptions<Customer>()),
+                Products = products.List(new QueryOptions<Product>())
             };
             if (ModelState.IsValid)
             {
                 if (vm.Incident.IncidentId == 0)
                 {
                     vm.Incident.DateOpened = DateTime.Now;
-                    Context.Incidents.Add(vm.Incident);
+                    incidents.Insert(vm.Incident);
                 }
                 else
                 {
-                    Context.Incidents.Update(vm.Incident);
+                    incidents.Update(vm.Incident);
                 }
-                Context.SaveChanges();
+                incidents.Save();
                 TempData["incidentmessage"] = $"Incident {vm.Incident.Title} has been saved";
                 return RedirectToAction("Index", vm);
             }
@@ -103,8 +113,8 @@ namespace SportsPro.Controllers
         [HttpPost]
         public IActionResult Delete(Incident incident)
         {
-            Context.Incidents.Remove(incident);
-            Context.SaveChanges();
+            incidents.Delete(incident);
+            incidents.Save();
             TempData["incidentmessage"] = $"Incident {incident.Title} has been deleted";
             return RedirectToAction("Index");
         }

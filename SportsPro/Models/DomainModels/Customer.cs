@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using SportsPro.Utility;
-namespace SportsPro.Models
+namespace SportsPro.Models.DomainModels
 {
     public class Customer
     {
         public int CustomerId { get; set; }
         [Required(ErrorMessage = "Please enter a first name")]
         [Display(Name = "First Name")]
-        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage ="Username may not contain special characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Username may not contain special characters")]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "First Name must be between 1 and 50 characters")]
         public string? FirstName { get; set; } = string.Empty;
         [Required(ErrorMessage = "Please enter a last name")]
@@ -31,7 +31,7 @@ namespace SportsPro.Models
         [StringLength(20, MinimumLength = 1, ErrorMessage = "Postal Code must be between 1 and 21 characters")]
         public string? PostalCode { get; set; } = string.Empty;
         [Display(Name = "Country")]
-        public string? CountryId { get; set;} = string.Empty;
+        public string? CountryId { get; set; } = string.Empty;
         [ValidateNever]
         public Country Country { get; set; } = null!;
         [EmailAddress(ErrorMessage = "Please enter a valid email address")]
@@ -45,7 +45,7 @@ namespace SportsPro.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Entered phone format is not valid.")]
         public string? Phone { get; set; } = string.Empty;
         [ValidateNever]
-        public List<Product> RegisteredProducts { get; set; } =  new List<Product>();
+        public List<Product> RegisteredProducts { get; set; } = new List<Product>();
         public string FullName => $"{FirstName} {LastName}";
     }
 }

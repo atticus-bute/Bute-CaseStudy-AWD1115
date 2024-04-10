@@ -1,22 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportsPro.Models;
+using SportsPro.Models.DataLayer;
+using SportsPro.Models.DomainModels;
 namespace SportsPro.Controllers
 {
     public class ProductController : Controller
     {
-        private SportsProContext Context { get; set; }
-        public ProductController(SportsProContext ctx)
-        {
-            Context = ctx;
-        }
+        private Repository<Product> products { get; set; }
+        public ProductController(SportsProContext ctx) => products = new Repository<Product>(ctx);
         //HTTP GET METHODS
         [HttpGet]
         [Route("products")]
         public ViewResult Index()
         {
-            var products = Context.Products.ToList();
-            ViewBag.Title = "Products";
-            return View(products);
+            return View(products.List(new QueryOptions<Product>()));
         }
         [HttpGet]
         public ViewResult Add()
@@ -28,13 +24,13 @@ namespace SportsPro.Controllers
         public ViewResult Edit(int id)
         {
             ViewBag.Action = "Edit";
-            var product = Context.Products.Find(id);
+            var product = products.Get(id);
             return View(product);
         }
         [HttpGet]
         public ViewResult Delete(int id)
         {
-            var product = Context.Products.Find(id);
+            var product = products.Get(id);
             return View(product);
         }
         //HTTP POST METHODS
@@ -45,13 +41,13 @@ namespace SportsPro.Controllers
             {
                 if (product.ProductId == 0)
                 {
-                    Context.Products.Add(product);
+                    products.Insert(product);
                 }
                 else
                 {
-                    Context.Products.Update(product);
+                    products.Update(product);
                 }
-                Context.SaveChanges();
+                products.Save();
                 TempData["productmessage"] = $"Product {product.Name} has been saved";
                 return RedirectToAction("Index");
             }
@@ -64,8 +60,8 @@ namespace SportsPro.Controllers
         [HttpPost]
         public RedirectToActionResult Delete(Product product)
         {
-            Context.Products.Remove(product);
-            Context.SaveChanges();
+            products.Delete(product);
+            products.Save();
             TempData["productmessage"] = $"Product {product.Name} has been deleted";
             return RedirectToAction("Index");
         }

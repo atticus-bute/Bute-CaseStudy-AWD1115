@@ -170,12 +170,12 @@ namespace SportsPro.Migrations
             migrationBuilder.InsertData(
                 table: "Technicians",
                 columns: new[] { "TechnicianId", "Email", "FirstName", "LastName", "Phone" },
-                values: new object[] { 1, "asdf@asdf.com", "Hector", "Lector", "123465888" });
+                values: new object[] { 1, "sidedraft@strbrd.com", "Dan", "Dresden", "123465888" });
 
             migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "CustomerId", "Address", "City", "CountryId", "Email", "FirstName", "LastName", "Phone", "PostalCode", "State" },
-                values: new object[] { 1, "1234 Main St", "Beverly Hills", "usa", "jaogg@mail.com", "Candy", "Kong", "123465888", "90210", "CA" });
+                values: new object[] { 1, "1234 Banandy St", "Beverly Hills", "usa", "jaogg@mail.com", "Marsh", "Hill", "123465888", "90210", "CA" });
 
             migrationBuilder.InsertData(
                 table: "CustomerProduct",
@@ -190,7 +190,7 @@ namespace SportsPro.Migrations
             migrationBuilder.InsertData(
                 table: "Incidents",
                 columns: new[] { "IncidentId", "CustomerId", "DateClosed", "DateOpened", "Description", "ProductId", "TechnicianId", "Title" },
-                values: new object[] { 1, 1, null, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Description", 1, 1, "Title" });
+                values: new object[] { 1, 1, null, new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "The product doesn't work properly.", 1, 1, "Faulty Product" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerProduct_RegisteredProductsProductId",

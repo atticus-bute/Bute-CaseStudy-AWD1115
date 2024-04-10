@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SportsPro.Models;
+using SportsPro.Models.DataLayer;
+using SportsPro.Models.DomainModels;
+using SportsPro.Models.ViewModels;
 
 namespace SportsPro.Controllers
 {
@@ -60,6 +62,48 @@ namespace SportsPro.Controllers
                 HttpContext.Session.SetInt32(CUST_KEY, customer.CustomerId);
                 return RedirectToAction("Register", new { id = customer.CustomerId });
             }
+        }
+        [HttpPost]
+        public IActionResult Add(RegistrationViewModel model)
+        {
+            var customer = Context.Customers
+                .Include(c => c.RegisteredProducts)
+                .FirstOrDefault(c => c.CustomerId == model.Customer.CustomerId);
+
+            if (customer != null)
+            {
+                var product = Context.Products.Find(model.ProductId);
+                if (product != null)
+                {
+                    customer.RegisteredProducts.Add(product);
+                    Context.SaveChanges();
+                    TempData.Add("registrationmessage", "Product added");
+                }
+            }
+            return RedirectToAction("Register", new { id = model.Customer.CustomerId });
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id, int productId)
+        {
+            var customer = Context.Customers
+                .Include(c => c.RegisteredProducts)
+                .FirstOrDefault(c => c.CustomerId == id);
+
+            if (customer != null)
+            {
+                var product = customer.RegisteredProducts.FirstOrDefault(p => p.ProductId == productId);
+                if (product != null)
+                {
+                    customer.RegisteredProducts.Remove(product);
+                    Context.SaveChanges();
+                    TempData.Add("registrationmessage", "Product removed");
+                    return RedirectToAction("Register", new { id = id });
+                }
+                TempData.Add("registrationmessage", "Product not found");
+                return RedirectToAction("Register", new { id = id });
+            }
+            return RedirectToAction("Register", new { id = id });
         }
     }
 }

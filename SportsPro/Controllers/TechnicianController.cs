@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportsPro.Models;
+using SportsPro.Models.DataLayer;
+using SportsPro.Models.DomainModels;
 
 namespace SportsPro.Controllers
 {

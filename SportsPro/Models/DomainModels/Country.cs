@@ -1,4 +1,4 @@
-﻿namespace SportsPro.Models
+﻿namespace SportsPro.Models.DomainModels
 {
     public class Country
     {

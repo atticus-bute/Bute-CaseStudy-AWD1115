@@ -1,6 +1,13 @@
 ﻿@model RegistrationViewModel
 @{
-    ViewBag.Title = $"Manage {Model.Customer.FullName}'s Products";
+    @if (Model.Customer.FullName != null)
+    {
+        ViewBag.Title = $"Manage {Model.Customer.FullName}'s Products";
+    }
+}
+@if (TempData.Keys.Contains("registrationmessage"))
+{
+    <div class="alert alert-success">@TempData["registrationmessage"]</div>
 }
 <h1 class="display-5">Registrations</h1>
 <table class="table table-bordered table-striped">
@@ -23,7 +30,11 @@
             {
                 <tr>
                     <td>@product.Name</td>
-                    <td><a asp-controller="Register" asp-action="Delete" asp-route-id="@product.ProductId" class="btn btn-danger">Delete</a></td>
+                    <td>
+                        <form asp-controller="Registration" asp-action="Delete" asp-route-id="@Model.Customer.CustomerId" asp-route-productId="@product.ProductId">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         }
@@ -31,10 +42,13 @@
 </table>
 <h1 class="display-5">Product</h1>
 <form asp-action="Add" method="post" class="row">
-    <select class="form-select" asp-for="Products" asp-items="@(new SelectList(Model.Products, "ProductId", "Name"))">
+    <input type="hidden" asp-for="@Model.Customer.CustomerId" />
+    <input type="hidden" asp-for="@Model.Products" />
+    <select class="form-select" asp-for="@Model.ProductId" asp-items="@(new SelectList(Model.Products, "ProductId", "Name"))">
+        <option value="0">Select a product...</option>
     </select>
     <button type="submit" class="btn btn-primary col-3 mt-1">Register Product</button>
 </form>
 <div>
-    <a asp-action="Index" class="btn btn-primary">Switch Customer</a>
+    <a asp-action="Index" class="mt-2 btn btn-primary">Switch Customer</a>
 </div>

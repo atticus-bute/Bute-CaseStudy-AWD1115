@@ -1,41 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportsPro.Models;
+using SportsPro.Models.DataLayer;
+using SportsPro.Models.DomainModels;
 namespace SportsPro.Controllers
 {
     public class CustomerController : Controller
     {
-        private SportsProContext Context { get; set; }
+        private Repository<Customer> customers { get; set; }
+        private Repository<Country> countries { get; set; }
         public CustomerController(SportsProContext ctx)
         {
-            Context = ctx;
+            customers = new Repository<Customer>(ctx);
+            countries = new Repository<Country>(ctx);
         }
         //HTTP GET METHODS
         [HttpGet]
         [Route("customers")]
         public IActionResult Index()
         {
-            var customers = Context.Customers.ToList();
-            return View(customers);
+            return View(customers.List(new QueryOptions<Customer>()));
         }
         [HttpGet]
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
-            ViewBag.Countries = Context.Countries.ToList();
+            ViewBag.Countries = countries.List(new QueryOptions<Country>());
             return View("Edit", new Customer());
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             ViewBag.Action = "Edit";
-            ViewBag.Countries = Context.Countries.ToList();
-            var customer = Context.Customers.Find(id);
+            ViewBag.Countries = countries.List(new QueryOptions<Country>());
+            var customer = customers.Get(id);
             return View(customer);
         }
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var customer = Context.Customers.Find(id);
+            var customer = customers.Get(id);
             return View(customer);
         }
         //HTTP POST METHODS
@@ -46,29 +48,29 @@ namespace SportsPro.Controllers
             {
                 if (customer.CustomerId == 0)
                 {
-                    Context.Customers.Add(customer);
+                    customers.Insert(customer);
                 }
                 else
                 {
-                    Context.Customers.Update(customer);
+                    customers.Update(customer);
                 }
-                ViewBag.Countries = Context.Countries.ToList();
-                Context.SaveChanges();
+                ViewBag.Countries = countries.List(new QueryOptions<Country>());
+                customers.Save();
                 TempData["customermessage"] = $"Customer {customer.FullName} has been saved";
                 return RedirectToAction("Index");
             }
             else
             {
                 ViewBag.Action = (customer.CustomerId == 0) ? "Add" : "Edit";
-                ViewBag.Countries = Context.Countries.ToList();
+                ViewBag.Countries = countries.List(new QueryOptions<Country>());
                 return View(customer);
             }
         }
         [HttpPost]
         public IActionResult Delete(Customer customer)
         {
-            Context.Customers.Remove(customer);
-            Context.SaveChanges();
+            customers.Delete(customer);
+            customers.Save();
             TempData["customermessage"] = $"Customer {customer.FullName} has been deleted";
             return RedirectToAction("Index");
         }

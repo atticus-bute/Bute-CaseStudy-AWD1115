@@ -1,5 +1,5 @@
-using SportsPro.Models;
 using Microsoft.EntityFrameworkCore;
+using SportsPro.Models.DataLayer;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRouting(options =>

@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SportsPro.Models;
+using SportsPro.Models.DataLayer;
 
 #nullable disable
 
 namespace SportsPro.Migrations
 {
     [DbContext(typeof(SportsProContext))]
-    [Migration("20240408150911_init")]
+    [Migration("20240410134508_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace SportsPro.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Country", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Country", b =>
                 {
                     b.Property<string>("CountryId")
                         .HasColumnType("nvarchar(450)");
@@ -88,7 +88,7 @@ namespace SportsPro.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Customer", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
@@ -147,19 +147,19 @@ namespace SportsPro.Migrations
                         new
                         {
                             CustomerId = 1,
-                            Address = "1234 Main St",
+                            Address = "1234 Banandy St",
                             City = "Beverly Hills",
                             CountryId = "usa",
                             Email = "jaogg@mail.com",
-                            FirstName = "Candy",
-                            LastName = "Kong",
+                            FirstName = "Marsh",
+                            LastName = "Hill",
                             Phone = "123465888",
                             PostalCode = "90210",
                             State = "CA"
                         });
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Incident", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Incident", b =>
                 {
                     b.Property<int>("IncidentId")
                         .ValueGeneratedOnAdd()
@@ -204,14 +204,14 @@ namespace SportsPro.Migrations
                             IncidentId = 1,
                             CustomerId = 1,
                             DateOpened = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Description",
+                            Description = "The product doesn't work properly.",
                             ProductId = 1,
                             TechnicianId = 1,
-                            Title = "Title"
+                            Title = "Faulty Product"
                         });
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Product", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Product", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -288,7 +288,7 @@ namespace SportsPro.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Technician", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Technician", b =>
                 {
                     b.Property<int>("TechnicianId")
                         .ValueGeneratedOnAdd()
@@ -320,52 +320,52 @@ namespace SportsPro.Migrations
                         new
                         {
                             TechnicianId = 1,
-                            Email = "asdf@asdf.com",
-                            FirstName = "Hector",
-                            LastName = "Lector",
+                            Email = "sidedraft@strbrd.com",
+                            FirstName = "Dan",
+                            LastName = "Dresden",
                             Phone = "123465888"
                         });
                 });
 
             modelBuilder.Entity("CustomerProduct", b =>
                 {
-                    b.HasOne("SportsPro.Models.Customer", null)
+                    b.HasOne("SportsPro.Models.DomainModels.Customer", null)
                         .WithMany()
                         .HasForeignKey("RegisteredCustomersCustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportsPro.Models.Product", null)
+                    b.HasOne("SportsPro.Models.DomainModels.Product", null)
                         .WithMany()
                         .HasForeignKey("RegisteredProductsProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Customer", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Customer", b =>
                 {
-                    b.HasOne("SportsPro.Models.Country", "Country")
+                    b.HasOne("SportsPro.Models.DomainModels.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId");
 
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("SportsPro.Models.Incident", b =>
+            modelBuilder.Entity("SportsPro.Models.DomainModels.Incident", b =>
                 {
-                    b.HasOne("SportsPro.Models.Customer", "Customer")
+                    b.HasOne("SportsPro.Models.DomainModels.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportsPro.Models.Product", "Product")
+                    b.HasOne("SportsPro.Models.DomainModels.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SportsPro.Models.Technician", "Technician")
+                    b.HasOne("SportsPro.Models.DomainModels.Technician", "Technician")
                         .WithMany()
                         .HasForeignKey("TechnicianId")
                         .OnDelete(DeleteBehavior.Cascade)

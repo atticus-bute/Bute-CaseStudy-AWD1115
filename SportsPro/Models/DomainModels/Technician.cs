@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace SportsPro.Models
+namespace SportsPro.Models.DomainModels
 {
     public class Technician
     {
