@@ -6,19 +6,17 @@ namespace SportsPro.Controllers
 {
     public class TechnicianController : Controller
     {
-        private SportsProContext Context { get; set; }
+        private Repository<Technician> technicians { get; set; }
         public TechnicianController(SportsProContext ctx)
         {
-            Context = ctx;
+            technicians = new Repository<Technician>(ctx);
         }
         //HTTP GET METHODS
         [HttpGet]
         [Route("technicians")]
         public IActionResult Index()
         {
-            var technicians = Context.Technicians.OrderBy(t => t.LastName).ToList();
-            ViewBag.Title = "Technicians";
-            return View(technicians);
+            return View(technicians.List(new QueryOptions<Technician>()));
         }
         [HttpGet]
         public IActionResult Add()
@@ -30,13 +28,13 @@ namespace SportsPro.Controllers
         public IActionResult Edit(int id)
         {
             ViewBag.Action = "Edit";
-            var technician = Context.Technicians.Find(id);
+            var technician = technicians.Get(id);
             return View(technician);
         }
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var technician = Context.Technicians.Find(id);
+            var technician = technicians.Get(id);
             return View(technician);
         }
         //HTTP POST METHODS
@@ -47,13 +45,13 @@ namespace SportsPro.Controllers
             {
                 if (technician.TechnicianId == 0)
                 {
-                    Context.Technicians.Add(technician);
+                    technicians.Insert(technician);
                 }
                 else
                 {
-                    Context.Technicians.Update(technician);
+                    technicians.Update(technician);
                 }
-                Context.SaveChanges();
+                technicians.Save();
                 TempData["technicianmessage"] = $"Technician {technician.FullName} has been saved";
                 return RedirectToAction("Index");
             }
@@ -66,8 +64,8 @@ namespace SportsPro.Controllers
         [HttpPost]
         public IActionResult Delete(Technician technician)
         {
-            Context.Technicians.Remove(technician);
-            Context.SaveChanges();
+            technicians.Delete(technician);
+            technicians.Save();
             TempData["technicianmessage"] = $"Technician {technician.FullName} has been deleted";
             return RedirectToAction("Index");
         }

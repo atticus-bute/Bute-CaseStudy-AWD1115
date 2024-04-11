@@ -9,31 +9,39 @@ namespace SportsPro.Controllers
     public class RegistrationController : Controller
     {
         private const string CUST_KEY = "custId";
-        private SportsProContext Context { get; set; }
+        private Repository<Customer> customers { get; set; }
+        private Repository<Product> products { get; set; }
         public RegistrationController(SportsProContext ctx)
         {
-            Context = ctx;
+            customers = new Repository<Customer>(ctx);
+            products = new Repository<Product>(ctx);
         }
         [HttpGet]
         public IActionResult Index()
         {
-            ViewBag.Customers = Context.Customers.Where(c => c.CustomerId > -1).OrderBy(c => c.LastName).ToList();
+            var options = new QueryOptions<Customer>
+            {
+                OrderBy = c => c.LastName,
+                Where = c => c.CustomerId > -1
+            };
+            ViewBag.Customers = customers.List(options);
             var customer = new Customer();
             int? custId = HttpContext.Session.GetInt32("custId");
             if (custId.HasValue)
             {
-                customer = Context.Customers.Find(custId);
+                customer = customers.Get(custId.Value);
             }
             return View(customer);
         }
         [HttpGet]
         public IActionResult Register(int id)
         {
-            var customer = Context.Customers
-                          .Include(c => c.RegisteredProducts)
-                          .ThenInclude(cp => cp.RegisteredCustomers)
-                          .FirstOrDefault(c => c.CustomerId == id);
-            ;
+            var options = new QueryOptions<Customer>
+            {
+                Includes = "RegisteredProducts.RegisteredCustomers",
+                Where = c => c.CustomerId == id
+            };
+            var customer = customers.Get(options);
             if (customer == null)
             {
                 TempData["registrationmessage"] = "Customer not found. Please select a customer.";
@@ -44,7 +52,7 @@ namespace SportsPro.Controllers
                 var model = new RegistrationViewModel
                 {
                     Customer = customer,
-                    Products = Context.Products.ToList()
+                    Products = products.List(new QueryOptions<Product>())
                 };
                 return View(model);
             }
@@ -66,17 +74,20 @@ namespace SportsPro.Controllers
         [HttpPost]
         public IActionResult Add(RegistrationViewModel model)
         {
-            var customer = Context.Customers
-                .Include(c => c.RegisteredProducts)
-                .FirstOrDefault(c => c.CustomerId == model.Customer.CustomerId);
+            var options = new QueryOptions<Customer>
+            {
+                Includes = "RegisteredProducts",
+                Where = c => c.CustomerId == model.Customer.CustomerId
+            };
+            var customer = customers.Get(options);
 
             if (customer != null)
             {
-                var product = Context.Products.Find(model.ProductId);
+                var product = products.Get(model.ProductId.Value);
                 if (product != null)
                 {
                     customer.RegisteredProducts.Add(product);
-                    Context.SaveChanges();
+                    customers.Save();
                     TempData.Add("registrationmessage", "Product added");
                 }
             }
@@ -86,9 +97,12 @@ namespace SportsPro.Controllers
         [HttpPost]
         public IActionResult Delete(int id, int productId)
         {
-            var customer = Context.Customers
-                .Include(c => c.RegisteredProducts)
-                .FirstOrDefault(c => c.CustomerId == id);
+            var custOptions = new QueryOptions<Customer>
+            {
+                Includes = "RegisteredProducts",
+                Where = c => c.CustomerId == id
+            };
+            var customer = customers.Get(custOptions);
 
             if (customer != null)
             {
@@ -96,7 +110,7 @@ namespace SportsPro.Controllers
                 if (product != null)
                 {
                     customer.RegisteredProducts.Remove(product);
-                    Context.SaveChanges();
+                    customers.Save();
                     TempData.Add("registrationmessage", "Product removed");
                     return RedirectToAction("Register", new { id = id });
                 }
