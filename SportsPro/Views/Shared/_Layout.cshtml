@@ -2,6 +2,9 @@
     string c = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     string a = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
 }
+@using Microsoft.AspNetCore.Identity
+@using SportsPro.Models.DomainModels
+@inject SignInManager<User> signInManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +16,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SportsPro.styles.css" asp-append-version="true" />
 </head>
-<body class="bg-primary-subtle">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+<body class="bg-pitch">
+    <header class="bg-grassy header-container">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportsPro</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -24,25 +27,37 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a asp-area="" asp-controller="Product" asp-action="Index" class="nav-link @(c == "Product" && a == "Index" ? "active" : "")">Products</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Technician" asp-action="Index" class="nav-link @(c == "Technician" && a == "Index" ? "active" : "")">Technicians</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Customer" asp-action="Index" class="nav-link @(c == "Customer" && a == "Index" ? "active" : "")">Customers</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Incident" asp-action="Index" asp-route-filter="all" class="nav-link @(c == "Incident" && a == "Index" ? "active" : "")">Incidents</a></li>
-                        <li class="nav-item"><a asp-area="" asp-controller="Registration" asp-action="Index" class="nav-link">Registrations</a></li>
-                        <li class="nav-item ms-auto"><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Product" asp-action="Index" class="nav-link @(c == "Product" && a == "Index" ? "nav-item-active" : "") @(c == "Product" && a == "Add" ? "nav-item-active" : "") @(c == "Product" && a == "Edit" ? "nav-item-active" : "") @(c == "Product" && a == "Delete" ? "nav-item-active" : "")">Products</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Technician" asp-action="Index" class="nav-link @(c == "Technician" && a == "Index" ? "nav-item-active" : "") @(c == "Technician" && a == "Add" ? "nav-item-active" : "") @(c == "Technician" && a == "Edit" ? "nav-item-active" : "") @(c == "Technician" && a == "Delete" ? "nav-item-active" : "")">Technicians</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Customer" asp-action="Index" class="nav-link @(c == "Customer" && a == "Index" ? "nav-item-active" : "") @(c == "Customer" && a == "Add" ? "nav-item-active" : "") @(c == "Customer" && a == "Edit" ? "nav-item-active" : "") @(c == "Customer" && a == "Delete" ? "nav-item-active" : "")">Customers</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Incident" asp-action="Index" asp-route-filter="all" class="nav-link @(c == "Incident" && a == "Index" ? "nav-item-active" : "") @(c == "Incident" && a == "Add" ? "nav-item-active" : "") @(c == "Incident" && a == "Edit" ? "nav-item-active" : "") @(c == "Incident" && a == "Delete" ? "nav-item-active" : "")">Incidents</a></li>
+                        <li class="nav-item"><a asp-area="" asp-controller="Registration" asp-action="Index" class="nav-link @(c == "Registration" && a == "Index" ? "nav-item-active" : "") @(c == "Registration" && a == "Register" ? "nav-item-active" : "")">Registrations</a></li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item"><form asp-area="" asp-controller="Account" asp-action="Logout" class="nav-link"><button type="submit" class="nav-link d-inline-flex">Logout</button></form></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Register" class="nav-link">Register</a></li>
+                            <li class="nav-item"><a asp-area="" asp-controller="Account" asp-action="Login" class="nav-link">Login</a></li>
+                        }
+                        <li class="nav-item align-content-center"><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link @(c == "Home" && a == "About" ? "nav-item-active" : "")">About</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container body-container">
         <main role="main" class="pb-3">
-            <h1 class="display-3">@ViewBag.Title</h1>
+            <h1 class="dynamic-heading">@ViewBag.Title</h1>
+            <hr>
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
             &copy; 2024 - SportsPro
         </div>

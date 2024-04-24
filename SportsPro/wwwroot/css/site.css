@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'staatliches-regular';
+    src: url('../fonts/Staatliches-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'gruppo-regular';
+    src: url('../fonts/Gruppo-Regular.ttf') format('truetype');
+}
 html {
   font-size: 14px;
 }
@@ -24,4 +32,65 @@ body {
 .input-validation-error {
     border: 2px solid #dc3545;
     background-color: #faebd7;
+}
+
+.dynamic-heading {
+    font-family: 'staatliches-regular' !important;
+    font-size: 60px;
+}
+
+
+.bg-grassy {
+    background-image: url(../images/grass.jpg);
+    background-color: rgba(130,130,130,.4);
+    background-blend-mode: darken;
+}
+
+.bg-pitch {
+    background-image: url(../images/pitch.jpg);
+}
+
+.header-container {
+    border-bottom: solid #415538;
+    margin-bottom: 20px;
+}
+
+.body-container {
+    padding: 10px 25px;
+    margin-bottom: 10px;
+    width: 200%;
+    border: solid #415538;
+    border-radius: 30px;
+    background-color: rgba(130,130,130,.6);
+}
+
+.footer {
+    border-top: solid #415538;
+    background-color: rgba(130,130,130,.6);
+}
+
+.navbar-brand {
+    font-family: 'staatliches-regular' !important;
+    font-size: 48px;
+    background-color: rgba(255, 107, 53, 1);
+    padding: 8px;
+    border-radius: 25px 75px;
+}
+
+.nav-item {
+    font-family: 'gruppo-regular' !important;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 25px 75px;
+    background-color: rgba(255, 107, 53, .7);
+    margin-inline: 40px;
+}
+
+.nav-item-active {
+    border-radius: 25px 75px;
+    font-size: 25px;
+    border-radius: 25px 75px;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(255, 107, 53, 1);
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportsPro.Models.DataLayer;
 using SportsPro.Models.DomainModels;
@@ -6,6 +7,7 @@ using SportsPro.Models.ViewModels;
 
 namespace SportsPro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TechIncidentController : Controller
     {
         private const string TECH_KEY = "techId";

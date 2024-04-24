@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SportsPro.Models.DataLayer;
 using SportsPro.Models.DomainModels;
 
 namespace SportsPro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TechnicianController : Controller
     {
         private Repository<Technician> technicians { get; set; }

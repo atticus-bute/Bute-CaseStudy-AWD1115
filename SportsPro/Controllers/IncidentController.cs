@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using SportsPro.Models.DomainModels;
 using SportsPro.Models.DataLayer;
 using SportsPro.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 namespace SportsPro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class IncidentController : Controller
     {
         private Repository<Incident> incidents { get; set; }

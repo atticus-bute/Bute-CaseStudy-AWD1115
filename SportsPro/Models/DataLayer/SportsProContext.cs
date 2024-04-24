@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportsPro.Models.Configuration;
 using SportsPro.Models.DomainModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace SportsPro.Models.DataLayer
 {
-    public class SportsProContext : DbContext
+    public class SportsProContext : IdentityDbContext<User>
     {
         public DbSet<Product> Products { get; set; } = null!;
         public DbSet<Technician> Technicians { get; set; } = null!;
@@ -13,6 +15,7 @@ namespace SportsPro.Models.DataLayer
         public SportsProContext(DbContextOptions<SportsProContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ProductConfig());
             modelBuilder.ApplyConfiguration(new TechnicianConfig());
             modelBuilder.ApplyConfiguration(new CustomerConfig());

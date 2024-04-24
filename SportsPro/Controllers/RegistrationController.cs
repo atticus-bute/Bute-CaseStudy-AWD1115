@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SportsPro.Models.DataLayer;
 using SportsPro.Models.DomainModels;
@@ -6,6 +7,7 @@ using SportsPro.Models.ViewModels;
 
 namespace SportsPro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RegistrationController : Controller
     {
         private const string CUST_KEY = "custId";
@@ -49,7 +51,7 @@ namespace SportsPro.Controllers
             }
             else
             {
-                var model = new RegistrationViewModel
+                var model = new ProductRegistrationViewModel
                 {
                     Customer = customer,
                     Products = products.List(new QueryOptions<Product>())
@@ -72,7 +74,7 @@ namespace SportsPro.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Add(RegistrationViewModel model)
+        public IActionResult Add(ProductRegistrationViewModel model)
         {
             var options = new QueryOptions<Customer>
             {

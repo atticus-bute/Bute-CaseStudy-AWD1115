@@ -2,7 +2,7 @@
 
 namespace SportsPro.Models.ViewModels
 {
-    public class RegistrationViewModel
+    public class ProductRegistrationViewModel
     {
         public Customer? Customer { get; set; } = null!;
         public IEnumerable<Product>? Products { get; set; } = null!;

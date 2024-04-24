@@ -11,13 +11,13 @@
 </div>
 <ul class="nav nav-pills">
     <li class="nav-item">
-        <a asp-action="Index" asp-route-filter="all" class="nav-link @(Model.Filter == "all" ? "active" : "")">All Incidents</a>
+        <a asp-action="Index" asp-route-filter="all" class="nav-link @(Model.Filter == "all" ? "nav-item-active" : "")">All Incidents</a>
     </li>
     <li class="nav-item">
-        <a asp-action="Index" asp-route-filter="unassigned" class="nav-link @(Model.Filter == "unassigned" ? "active" : "")">Unassigned Incidents</a>
+        <a asp-action="Index" asp-route-filter="unassigned" class="nav-link @(Model.Filter == "unassigned" ? "nav-item-active" : "")">Unassigned Incidents</a>
     </li>
     <li class="nav-item">
-        <a asp-action="Index" asp-route-filter="open" class="nav-link @(Model.Filter == "open" ? "active" : "")">Open Incidents</a>
+        <a asp-action="Index" asp-route-filter="open" class="nav-link @(Model.Filter == "open" ? "nav-item-active" : "")">Open Incidents</a>
     </li>
 </ul>
 <table class="mt-3 table table-bordered table-striped">
