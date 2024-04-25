@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="~/SportsPro.styles.css" asp-append-version="true" />
 </head>
 <body class="bg-pitch">
-    <header class="bg-grassy header-container">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark box-shadow mb-3">
+    <header class="header-container z-3">
+        <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportsPro</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -49,6 +49,7 @@
             </div>
         </nav>
     </header>
+
     <div class="container body-container">
         <main role="main" class="pb-3">
             <h1 class="dynamic-heading">@ViewBag.Title</h1>
@@ -57,7 +58,7 @@
         </main>
     </div>
 
-    <footer class="footer">
+    <footer class="footer mt-3 ">
         <div class="container">
             &copy; 2024 - SportsPro
         </div>
